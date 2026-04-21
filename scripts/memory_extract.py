@@ -127,8 +127,9 @@ class MemoryExtractor:
         patterns = [
             r'(?:solution|approach|method)\s+(?:that\s+)?(?:worked|successful).{20,150}',
             r'(?:avoid|don.t|never|shouldn.t).{10,100}(?:because|since|as)',
-            r'(?:流程|习惯|模式).{10,80}',
-            r'(?:通常|习惯).{10,60}(?:下午|上午|周)',
+            r'(?:流程|习惯|模式|通常|总是|经常|一般).{10,80}',
+            r'(?:通常|习惯|总是|经常|一般).{10,60}(?:下午|上午|周|每天|每周|每月)',
+            r'(?:每周|每月|每天|周五|周一|周二|周三|周四).{5,60}',
         ]
         for pattern in patterns:
             for match in re.finditer(pattern, text, re.IGNORECASE | re.UNICODE):
