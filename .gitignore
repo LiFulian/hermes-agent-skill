@@ -40,7 +40,7 @@ Thumbs.db
 # Memory files (user data, don't commit)
 memory/MEMORY.md
 memory/USER.md
-~/.universal-memory/
+.universal-memory/
 
 # Test coverage
 coverage/

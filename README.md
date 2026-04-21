@@ -1,275 +1,115 @@
-# Universal Memory Skill
+# Universal Memory Skill / 通用记忆技能
 
-> Give any AI agent Hermes-like persistent memory capabilities - works with Claude, Cursor, Trae, CodeBuddy, Coder, Windsurf, ChatGPT, Copilot, and any AI tool or IDE.
+> Give any AI agent Hermes-like persistent memory capabilities / 让任何AI工具都具有Hermes Agent级别的持久记忆能力
 
 ![License](https://img.shields.io/badge/License-MIT-yellow)
 ![Python](https://img.shields.io/badge/Python-3.8%2B-blue)
 ![Tests](https://img.shields.io/badge/Tests-71%20passed-4CAF50)
 ![Coverage](https://img.shields.io/badge/Coverage-79%25-4CAF50)
 
-## What is This?
+## What is This? / 这是什么？
 
-Universal Memory Skill transforms any AI agent into a persistent, learning-capable assistant like Hermes Agent. It provides:
+Universal Memory Skill transforms any AI agent into a persistent, learning-capable assistant / 将任何AI智能体转变为具有持久记忆、学习能力的助手
 
-- **Cross-session memory**: AI remembers your preferences, projects, and patterns
-- **Automatic memory management**: No manual note-taking, AI extracts and saves important info
-- **Universal compatibility**: Works with any AI IDE or tool
-- **Open standard**: Simple Markdown files, human-readable and editable
+- **Cross-session memory** / 跨会话记忆：AI remembers your preferences, projects, and patterns / 记住你的偏好、项目和工作模式
+- **Automatic memory management** / 自动记忆管理：No manual note-taking / 无需手动记录，AI自动提取和保存重要信息
+- **Universal compatibility** / 通用兼容性：Works with any AI IDE or tool / 适用于任何AI IDE或工具
 
-## Features
+## Quick Start / 快速开始
 
-### Three-Layer Memory Architecture
-
-1. **Session Memory**: Active conversation context (managed by AI tool)
-2. **Persistent Memory**: Cross-session knowledge in `MEMORY.md` and `USER.md`
-3. **Skill Memory**: Learned patterns stored as reusable skills
-
-### Core Capabilities
-
-- **Automatic Extraction**: AI identifies important information from conversations
-- **Frozen Snapshot Injection**: Memory injected at session start for consistent context
-- **Periodic Reflection**: AI regularly reviews and synthesizes knowledge
-- **Smart Cleanup**: Automatic deduplication and size management
-- **User Modeling**: Deep understanding of your preferences and working style
-
-## Quick Start
-
-### Option 1: Skill Files Only (No Dependencies)
-
-1. Copy the `skills/` directory to your project
-2. Add skill instructions to your AI tool's custom instructions
-3. Create `~/.universal-memory/` directory for memory files
-4. Start using!
-
-### Option 2: Full Installation (With CLI Tools)
+### Installation / 安装
 
 ```bash
 git clone https://github.com/LiFulian/hermes-agent-skill.git
-cd universal-memory-skill
+cd hermes-agent-skill
 pip install -e .
 ```
 
-### Option 3: Quick Install
+### Configuration / 配置
 
-```bash
-pip install universal-memory-skill
-```
-
-## Usage
-
-### For AI Agents
-
-At the start of each session, the AI should:
-
-1. Read `~/.universal-memory/MEMORY.md` if it exists
-2. Read `~/.universal-memory/USER.md` if it exists
-3. Use this information to personalize responses
-4. Automatically update memory during conversations
-
-### For Users (CLI)
-
-```bash
-# View current memory
-universal-memory view
-
-# Search memory
-universal-memory search "python project"
-
-# Manually save information
-universal-memory save "User prefers pytest for testing"
-
-# Show memory statistics
-universal-memory stats
-
-# Reset memory (with confirmation)
-universal-memory reset
-```
-
-## Project Structure
+Add to your AI tool's custom instructions / 添加到AI工具的自定义指令：
 
 ```
-universal-memory-skill/
-├── skills/                    # Core skill definitions
-│   ├── memory.md              # Main memory skill
-│   ├── memory-manager.md      # Memory management operations
-│   └── memory-reflect.md      # Periodic reflection skill
-├── scripts/                   # Helper scripts
-│   ├── memory_extract.py      # Extract info from conversations
-│   ├── memory_inject.py       # Inject memory into prompts
-│   └── memory_cleanup.py      # Clean and optimize memory
-├── cli/                       # Command-line interface
-│   └── memory_cli/
-│       ├── main.py
-│       └── commands/
-├── tests/                     # Test suite
-│   ├── test_memory_extract.py
-│   ├── test_memory_inject.py
-│   ├── test_memory_cleanup.py
-│   ├── test_skill_format.py
-│   ├── test_cli_commands.py
-│   └── integration/
-│       └── test_full_workflow.py
-├── docs/                      # Documentation
-│   ├── QUICKSTART.md
-│   ├── COMPATIBILITY.md
-│   └── plans/
-└── examples/                  # Integration examples
-    ├── claude-desktop/
-    ├── cursor/
-    ├── windsurf/
-    └── chatgpt/
+You have persistent memory at ~/.universal-memory/
+- Read MEMORY.md and USER.md at session start
+- Update memory when important info is discovered
+- MEMORY.md: Project context and patterns
+- USER.md: User preferences and habits
+
+你有一个记忆系统，记忆文件在 ~/.universal-memory/
+- 会话开始时读取 MEMORY.md 和 USER.md
+- 发现重要信息时自动更新记忆文件
 ```
 
-## Memory Files
+## Memory Files / 记忆文件
 
-### MEMORY.md (Agent Memory)
-
-Stores agent's knowledge: environment facts, conventions, learned patterns.
-
-**Character limit**: 2200 characters (~800 tokens)
+### USER.md - User Profile / 用户档案
 
 ```markdown
-# Agent Memory
+# User Profile / 用户档案
 
-## Project Context
-- Building Python web scraper
-- Tech stack: asyncio, aiohttp
-
-## Learned Patterns
-- Prefers asyncio over threading
-- Comprehensive error handling
-
-## Key Facts
-- Deployment: AWS Lambda
+## Preferences / 偏好
+- Language: Python / 语言：Python
 - IDE: Cursor
+- Testing: pytest / 测试：pytest
+
+## Projects / 项目
+- Web Scraper / 网页爬虫
 ```
 
-### USER.md (User Profile)
-
-Stores user information: preferences, habits, project info.
-
-**Character limit**: 1500 characters (~550 tokens)
+### MEMORY.md - Agent Memory / 智能体记忆
 
 ```markdown
-# User Profile
+# Agent Memory / 智能体记忆
 
-## Preferences
-- Language: Python
-- IDE: Cursor
-- Testing: pytest
+## Project Context / 项目背景
+- Tech stack: Python, FastAPI / 技术栈
 
-## Projects
-- Web Scraper: E-commerce data collection
-- API Service: FastAPI backend
-
-## Coding Style
-- Explicit type hints
-- Async/await patterns
+## Key Facts / 关键事实
+- Deployment: AWS Lambda / 部署在AWS
 ```
 
-## How It Works
+**Limits / 限制**：USER.md ≤ 1500 chars，MEMORY.md ≤ 2200 chars
 
-### Memory Flow
+## How It Works / 工作原理
 
 ```
-User Conversation
-      ↓
-[Memory Extractor] ← Pattern recognition & information extraction
-      ↓
-[Memory Files] ← MEMORY.md + USER.md (auto-updated)
-      ↓
-[Memory Injector] ← Frozen snapshot for session context
-      ↓
-AI Response ← Personalized with persistent knowledge
+User → AI remembers → Next session applies
+"我用Python" → Python写入USER.md → 以后默认用Python
+"I prefer pytest" → pytest写入USER.md → 以后默认用pytest
 ```
 
-### Auto-Reflection Cycle
-
-Every 10 conversation turns, the AI:
-
-1. Reviews recent conversation
-2. Identifies important information
-3. Updates memory files if needed
-4. Synthesizes patterns and insights
-
-## Compatibility
-
-| Tool | Integration Method | Setup Time |
-|------|-------------------|------------|
-| Claude Desktop | Custom Instructions | 2 min |
-| Cursor IDE | .cursor/rules | 1 min |
-| Windsurf IDE | Cascade Rules | 1 min |
-| ChatGPT | Custom Instructions | 2 min |
-| Any AI Tool | Skill file copy | 1 min |
-
-See [COMPATIBILITY.md](docs/COMPATIBILITY.md) for detailed setup instructions.
-
-## Development
-
-### Setup
+## CLI Tools / 命令行工具
 
 ```bash
-pip install -e ".[dev]"
+universal-memory view      # View memory / 查看记忆
+universal-memory search    # Search memory / 搜索记忆
+universal-memory stats     # Show stats / 显示统计
+universal-memory save      # Save info / 保存信息
 ```
 
-### Run Tests
+## Compatibility / 兼容性
+
+Works with / 支持：Claude, Cursor, Trae, Windsurf, ChatGPT, Copilot, Ollama, any AI tool
+
+See [docs/COMPATIBILITY.md](docs/COMPATIBILITY.md) for details / 查看详细配置说明
+
+## Development / 开发
 
 ```bash
+# Run tests / 运行测试
 pytest tests/ -v
+
+# Run demo / 运行示例
+python demos/calendar_todo/demo_runner.py
 ```
 
-### Run Tests with Coverage
+## License / 许可证
 
-```bash
-pytest tests/ -v --cov=scripts --cov=cli --cov-report=html
-```
+MIT License - Free to use / MIT许可证 - 免费使用
 
-### Code Formatting
+## Support / 支持
 
-```bash
-black scripts/ cli/ tests/
-ruff check scripts/ cli/ tests/
-```
-
-## Testing
-
-The project includes comprehensive tests:
-
-- **Unit Tests**: Individual module testing (40+ tests)
-- **Integration Tests**: Full workflow testing (10+ tests)
-- **Format Tests**: Skill file validation (15+ tests)
-- **CLI Tests**: Command testing (10+ tests)
-
-### Test Coverage
-
-```
-Module                  Coverage
-scripts/memory_extract.py    85%
-scripts/memory_inject.py     92%
-scripts/memory_cleanup.py    88%
-cli/memory_cli/              80%
-```
-
-## Contributing
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## Acknowledgments
-
-- Inspired by [Hermes Agent](https://github.com/NousResearch/hermes-agent) by Nous Research
-- Based on the open [agentskills.io](https://agentskills.io) standard
-- Memory architecture concepts from academic research on persistent AI memory
-
-## Support
-
-- Documentation: [docs/](docs/)
-- Issues: [GitHub Issues](https://github.com/your-org/universal-memory-skill/issues)
-- Discussions: [GitHub Discussions](https://github.com/your-org/universal-memory-skill/discussions)
+- Docs / 文档：[docs/](docs/)
+- Issues：[GitHub Issues](https://github.com/LiFulian/hermes-agent-skill/issues)
+- Discussions：[GitHub Discussions](https://github.com/LiFulian/hermes-agent-skill/discussions)
