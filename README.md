@@ -44,7 +44,7 @@ Universal Memory Skill transforms any AI agent into a persistent, learning-capab
 ### Option 2: Full Installation (With CLI Tools)
 
 ```bash
-git clone https://github.com/your-org/universal-memory-skill.git
+git clone https://github.com/LiFulian/hermes-agent-skill.git
 cd universal-memory-skill
 pip install -e .
 ```

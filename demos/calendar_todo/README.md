@@ -5,11 +5,14 @@
 ## 运行Demo
 
 ```bash
-# 方式1: 使用Python直接运行
-cd /Users/lfl/Documents/软件开发/hermes\ agent\ skill
+# 克隆项目
+git clone https://github.com/LiFulian/hermes-agent-skill.git
+cd hermes-agent-skill
+
+# 运行Demo
 PYTHONPATH=. python3 demos/calendar_todo/demo_runner.py
 
-# 方式2: 运行测试验证
+# 运行测试验证
 PYTHONPATH=. pytest demos/calendar_todo/test_demo.py -v
 ```
 
