@@ -87,6 +87,31 @@ class TestMemoryExtractor:
         entries = extractor.extract_from_conversation("")
         assert entries == []
     
+    def test_extract_chinese_preferences(self, extractor):
+        conversation = "我喜欢用Python开发后端，偏好使用FastAPI框架"
+        entries = extractor.extract_from_conversation(conversation)
+        preference_entries = [e for e in entries if e.memory_type == MemoryType.USER_PREFERENCE]
+        assert len(preference_entries) > 0
+        assert any("Python" in e.content for e in preference_entries)
+        assert any("FastAPI" in e.content for e in preference_entries)
+    
+    def test_extract_chinese_project_context(self, extractor):
+        conversation = "我正在开发一个网页爬虫，使用Python和asyncio"
+        entries = extractor.extract_from_conversation(conversation)
+        project_entries = [e for e in entries if e.memory_type == MemoryType.PROJECT_CONTEXT]
+        assert len(project_entries) > 0
+    
+    def test_extract_chinese_important_facts(self, extractor):
+        conversation = "重要：部署目标是AWS Lambda，超时时间是15分钟"
+        entries = extractor.extract_from_conversation(conversation)
+        fact_entries = [e for e in entries if e.memory_type == MemoryType.IMPORTANT_FACT]
+        assert len(fact_entries) > 0
+    
+    def test_extract_mixed_language(self, extractor):
+        conversation = "I use Python for 网页爬虫 development，需要使用asyncio"
+        entries = extractor.extract_from_conversation(conversation)
+        assert len(entries) > 0
+    
     def test_merge_into_memory(self, extractor):
         entries = [
             MemoryEntry("Prefers Python", MemoryType.USER_PREFERENCE),

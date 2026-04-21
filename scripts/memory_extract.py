@@ -105,9 +105,9 @@ class MemoryExtractor:
     def _extract_project_context(self, text: str) -> List[MemoryEntry]:
         entries = []
         patterns = [
-            r'(?:building|working on|creating|developing)\s+(.{20,150})',
-            r'(?:project|app|tool)\s+(?:is|for|that)\s+(.{20,150})',
-            r'(?:using|built with|tech stack).{20,150}(?:Python|React|JavaScript|TypeScript|Rust|Go)',
+            r'(?:building|working on|creating|developing|开发|创建|构建|工作).{5,150}',
+            r'(?:project|app|tool|项目|产品).{5,150}',
+            r'(?:using|built with|tech stack|使用|技术栈).{5,150}(?:Python|React|JavaScript|TypeScript|Rust|Go|Python|React|JavaScript|TypeScript|Rust|Go)',
             r'(?:项目|产品|团队|会议).{5,100}',
             r'(?:创建|设置|添加|安排).{5,80}(?:会议|待办|日程|提醒)',
         ]
@@ -144,7 +144,7 @@ class MemoryExtractor:
     def _extract_important_facts(self, text: str) -> List[MemoryEntry]:
         entries = []
         patterns = [
-            r'(?:remember|note|important).{20,150}',
+            r'(?:remember|note|important|重要).{20,150}',
             r'(?:deploy|server|environment|config).{20,100}',
             r'(?:Google|日历|提醒|周报|例会).{5,80}',
             r'(?:每[周月天]|周五|周一|周三|周四|周二).{5,60}',
@@ -265,13 +265,64 @@ class MemoryExtractor:
                         result_lines.append(entry_line)
                     del sections[section]
         
-        total_length = len("\n".join(result_lines))
-        if total_length > max_chars:
-            result_lines = self._trim_to_limit(result_lines, max_chars)
+        # Check length and trim if needed
+        result_text = "\n".join(result_lines)
+        if len(result_text) > max_chars:
+            result_text = self._trim_to_limit_text(result_text, max_chars)
         
-        return "\n".join(result_lines)
+        return result_text
+    
+    def _trim_to_limit_text(self, text: str, max_chars: int) -> str:
+        """Trim text to stay within character limit."""
+        if len(text) <= max_chars:
+            return text
+        
+        # First try to trim by lines
+        lines = text.split("\n")
+        result_lines = []
+        current_length = 0
+        
+        for line in lines:
+            line_length = len(line) + 1  # +1 for newline
+            if current_length + line_length <= max_chars:
+                result_lines.append(line)
+                current_length += line_length
+            else:
+                # If this line would exceed, truncate it
+                remaining = max_chars - current_length
+                if remaining > 0:
+                    truncated_line = line[:remaining]
+                    result_lines.append(truncated_line)
+                break
+        
+        # Ensure we have at least the basic structure
+        if len(result_lines) < 10:
+            result_lines = lines[:10]
+        
+        result = "\n".join(result_lines)
+        
+        # Final check - if still over, truncate the entire text
+        if len(result) > max_chars:
+            result = result[:max_chars]
+        
+        return result
     
     def _trim_to_limit(self, lines: List[str], max_chars: int) -> List[str]:
-        while len("\n".join(lines)) > max_chars and len(lines) > 10:
-            lines.pop()
-        return lines
+        """Trim lines to stay within character limit."""
+        result = []
+        current_length = 0
+        
+        for line in lines:
+            line_length = len(line) + 1  # +1 for newline
+            if current_length + line_length <= max_chars:
+                result.append(line)
+                current_length += line_length
+            else:
+                # If adding this line would exceed the limit, break
+                break
+        
+        # Ensure we have at least the basic structure
+        if len(result) < 10:
+            result = lines[:10]
+            
+        return result
